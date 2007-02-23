@@ -1,13 +1,6 @@
 <h3>Code Coverage</h3>
-<table class="listing coverage" id="nosebitten_coverage">
- <thead><!--
-   <tr>
-     <th class="name">Unit</th>
-     <th class="loc">Lines of Code</th>
-     <th class="exe">Executed Lines</td>
-     <th class="cov">Coverage</th>
-     <th class="missed">Missed Lines</th>
-   </tr> -->
+<table class="listing coverage scrollable" id="nosebitten_coverage">
+ <thead>
    <tr>
      <th>Unit</th>
      <th>Lines of Code</th>
@@ -17,8 +10,7 @@
    </tr>
  </thead>
  <tbody><?cs
- each:item = data ?>
-  <tr>
+ each:item = data ?><tr>
     <td class="name">
       <?cs if:item.href ?><a href="<?cs var:item.href ?>"><?cs var:item.name ?></a>
       <?cs else ?><?cs var:item.name ?>
@@ -36,7 +28,7 @@
     </td>
   </tr><?cs /each ?>
  </tbody>
- <tbody class="totals">
+ <tfoot class="totals">
    <tr>
      <th>Total</th>
      <td><?cs var:totals.loc ?></td>
@@ -44,9 +36,9 @@
      <td><?cs var:totals.cov ?>%</td>
      <td> </td>
    </tr>
- </tbody>
+ </tfoot>
 </table>
-<div id="sorting">
+<div id="sorting_coverage" class="sorting">
   <div>Sorting tables, please hold on...</div>
 </div>
 <script>
@@ -57,6 +49,11 @@ $(document).ready(function() {
         sortClassDesc: 'sortDown',    // class name for descending sorting action to header
         headerClass: 'largeHeaders',           // class name for headers (th's)
         disableHeader: ['Missed Lines'],
+    }).tableScroller();
+    $(document).sortStart(function(){
+        $("div#sorting_coverage").show();
+    }).sortStop(function(){
+        $("div#sorting_coverage").hide();
     });
 });
 </script>
