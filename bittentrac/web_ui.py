@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: web_ui.py 6 2007-02-11 00:00:47Z s0undt3ch $
+# $Id: web_ui.py 8 2007-02-23 22:20:52Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/web_ui.py $
-# $LastChangedDate: 2007-02-11 00:00:47 +0000 (Sun, 11 Feb 2007) $
-#             $Rev: 6 $
+# $LastChangedDate: 2007-02-23 22:20:52 +0000 (Fri, 23 Feb 2007) $
+#             $Rev: 8 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -39,5 +39,6 @@ class BittenTracChrome(Component):
             add_stylesheet(req, 'bittentrac/bittentrac.css')
             add_script(req, 'bittentrac/jquery-latest.js')
             add_script(req, 'bittentrac/jquery.tablesorter.js')
-            add_script(req, 'bittentrac/jquery.hovertip.js')
+            add_script(req, 'bittentrac/jquery.tablescroller.js')
+            add_script(req, 'bittentrac/jquery.tooltip.js')
         return template, content_type

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: sumarizers.py 1 2007-02-10 23:08:25Z s0undt3ch $
+# $Id: sumarizers.py 8 2007-02-23 22:20:52Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/sumarizers.py $
-# $LastChangedDate: 2007-02-10 23:08:25 +0000 (Sat, 10 Feb 2007) $
-#             $Rev: 1 $
+# $LastChangedDate: 2007-02-23 22:20:52 +0000 (Fri, 23 Feb 2007) $
+#             $Rev: 8 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -129,6 +129,14 @@ GROUP BY lint_file.value, lint_line.value, lint_type.value
 ORDER BY file, line, type""", (category, build.id, step.name))
 
         data = []
+        totals = {
+            'error': 0,
+            'warning': 0,
+            'refactor': 0,
+            'failure': 0,
+            'convention': 0,
+
+        }
         for fname, line, ltype, tag, msg, cat in cursor:
             data.append(
                 {
@@ -141,6 +149,8 @@ ORDER BY file, line, type""", (category, build.id, step.name))
                      'cat': cat
                 }
             )
+            totals[cat] += 1
         hdf = HDFWrapper(loadpaths=Chrome(self.env).get_all_templates_dirs())
         hdf['data'] = data
+        hdf['totals'] = totals
         return hdf.render('bittentrac_pylint.cs')

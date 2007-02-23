@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: plugbitten.py 1 2007-02-10 23:08:25Z s0undt3ch $
+# $Id: plugbitten.py 8 2007-02-23 22:20:52Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/plugbitten.py $
-# $LastChangedDate: 2007-02-10 23:08:25 +0000 (Sat, 10 Feb 2007) $
-#             $Rev: 1 $
+# $LastChangedDate: 2007-02-23 22:20:52 +0000 (Fri, 23 Feb 2007) $
+#             $Rev: 8 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -82,8 +82,8 @@ def nblint(ctxt, module=None, args=''):
         args.append('--output-format=parseable')
     if '--include-ids=y' not in args:
         args.append('--include-ids=y')
-    if '--reports=n' not in args:
-        args.append('--reports=n')
+    #if '--reports=n' not in args:
+    #    args.append('--reports=n')
     args.append('--persistent=n')
 
     args = ' '.join(args) + ' %s' % module
@@ -95,6 +95,7 @@ def nblint(ctxt, module=None, args=''):
     msg_re = re.compile(r'(?P<file>.+):(?P<line>\d+): '
                         r'\[(?P<type>[A-Z]\d*)(?:, (?P<tag>[\w\.]+))?\] '
                         r'(?P<msg>.*)')
+    tot_re = re.compile(r'[\w\s](?P<score>[-\.\d]+)/(?P<maxval>[\d]+)')
     msg_categories = dict(W='warning', E='error', C='convention', R='refactor', F='failure')
 
     problems = xmlio.Fragment()
@@ -106,6 +107,7 @@ def nblint(ctxt, module=None, args=''):
             for line in fd:
                 #log.debug('LINT_LINE: %s', line)
                 match = msg_re.search(line)
+                totals = tot_re.search(line)
                 if match:
                     msg_type = match.group('type')
                     category = msg_categories.get(msg_type[0])
@@ -128,6 +130,16 @@ def nblint(ctxt, module=None, args=''):
                                                   line=lineno, file=filename,
                                                   msg=msg)
                     )
+                #elif line.find('Your code has been rated at') != -1:
+                elif totals:
+                    log.debug('Looking for Scores')
+                    problems.append(xmlio.Element(
+                        'lint_score',
+                        score=totals.group('score'),
+                        maxval=totals.group('maxval')
+                    ))
+                else:
+                    log.debug('No match found')
             #log.debug('PROBS', problems)
             ctxt.report('lint', problems)
         finally:
