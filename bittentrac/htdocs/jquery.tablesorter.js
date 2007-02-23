@@ -23,7 +23,7 @@ jQuery.fn.tableSorter = function(o) {
 		rowLimit: 0,
 		minRowsForWaitingMsg: 0,
 		disableHeader: -1,
-		stripRowsOnStartUp: false,
+		stripeRowsOnStartUp: false,
 		columnParser: false,
 		rowHighlightClass: false,
 		useCache: true,
@@ -58,8 +58,8 @@ jQuery.fn.tableSorter = function(o) {
 		/** table object holder.*/
 		var oTable = this;
 
-		if(defaults.stripRowsOnStartUp && defaults.stripingRowClass) {
-			jQuery.tableSorter.utils.stripRows(oTable,defaults);
+		if(defaults.stripeRowsOnStartUp && defaults.stripingRowClass) {
+			jQuery.tableSorter.utils.stripeRows(oTable,defaults);
 		}
 		
 		/** bind events to the tablesorter element */
@@ -405,7 +405,7 @@ jQuery.tableSorter = {
 				/** remove old! */
 				jQuery("> tbody:first/tr",o).removeClass(defaults.stripingRowClass[0]).removeClass(defaults.stripingRowClass[1]);
 				/** add new! */
-				jQuery.tableSorter.utils.stripRows(o,defaults);
+				jQuery.tableSorter.utils.stripeRows(o,defaults);
 			}
 			if(defaults.highlightClass) {
 				jQuery("> tbody:first/tr",o).find("> td:eq(" + index + ")").addClass(defaults.highlightClass).end();
@@ -413,7 +413,7 @@ jQuery.tableSorter = {
 			/** empty object, good practice! */
 			c=null;
 		},
-		stripRows: function(o,defaults) {
+		stripeRows: function(o,defaults) {
 			jQuery("> tbody:first/tr:visible:even",o).addClass(defaults.stripingRowClass[0]);
 			jQuery("> tbody:first/tr:visible:odd",o).addClass(defaults.stripingRowClass[1]);
 		},
@@ -423,7 +423,7 @@ jQuery.tableSorter = {
 			} else if(typeof(arg) == "string") {
 				return (arg.toLowerCase() == jQuery.tableSorter.utils.getElementText(o,'header',index).toLowerCase()) ? true : false;
 			} else if(arg.parentNode) {
-       return (o == arg) ? true : false
+	   return (o == arg) ? true : false
 			} else if(typeof(arg) == "object") {
 				var l = arg.length;
 				if(!this.lastFound) { this.lastFound = -1; }
@@ -442,19 +442,19 @@ jQuery.tableSorter = {
 	sorters: {
 		generic: function(a,b) {
 			return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0));
- 		},
- 		numeric: function(a,b) {
+		},
+		numeric: function(a,b) {
 			return a[1]-b[1];
 		}
 	}
 };
 
 jQuery.fn.wrapInner = function(o) {
-    return this.each(function(){
-                 var jQ = jQuery(this);
-                 var c = jQ.html();
-                 jQ.empty().append(o.el).filter(o.id).html(c);
-    });
+	return this.each(function(){
+				 var jQ = jQuery(this);
+				 var c = jQ.html();
+				 jQ.empty().append(o.el).filter(o.id).html(c);
+	});
 };
 
 /**
@@ -487,7 +487,7 @@ jQuery.tableSorter.parsers.generic = {
 jQuery.tableSorter.parsers.currency = {
 	id: 'currency',
 	is: function(s) {
-		return s.match(new RegExp(/^[£$]/));
+		return s.match(new RegExp(/^[Â£$]/));
 	},
 	format: function(s) {
 		return parseFloat(s.replace(new RegExp(/[^0-9.]/g),''));
@@ -585,14 +585,14 @@ jQuery.tableSorter.parsers.shortDate = {
 	sorter: jQuery.tableSorter.sorters.numeric
 };
 jQuery.tableSorter.parsers.time = {
-    id: 'time',
-    is: function(s) {
-        return s.toUpperCase().match(new RegExp(/^(([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(AM|PM)))$/));
-    },
-    format: function(s) {
-        return parseFloat((new Date("2000/01/01 " + s)).getTime());
-    },
-    sorter: jQuery.tableSorter.sorters.numeric
+	id: 'time',
+	is: function(s) {
+		return s.toUpperCase().match(new RegExp(/^(([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(AM|PM)))$/));
+	},
+	format: function(s) {
+		return parseFloat((new Date("2000/01/01 " + s)).getTime());
+	},
+	sorter: jQuery.tableSorter.sorters.numeric
 };
 /** add parsers */
 jQuery.tableSorter.analyzer.add(jQuery.tableSorter.parsers.currency);
