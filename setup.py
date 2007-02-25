@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 4 2007-02-10 23:28:33Z s0undt3ch $
+# $Id: setup.py 10 2007-02-25 23:02:15Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/setup.py $
-# $LastChangedDate: 2007-02-10 23:28:33 +0000 (Sat, 10 Feb 2007) $
-#             $Rev: 4 $
+# $LastChangedDate: 2007-02-25 23:02:15 +0000 (Sun, 25 Feb 2007) $
+#             $Rev: 10 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -30,12 +30,13 @@ setup(
     entry_points = {
         'trac.plugins': [
             'bittentrac.sumarizers = bittentrac.sumarizers',
-            'bittentrac.web_ui = bittentrac.web_ui'
+            'bittentrac.web_ui = bittentrac.web_ui',
+            'bittentrac.charts = bittentrac.charts'
         ],
     'bitten.recipe_commands': [
             NS + 'unittest = bittentrac.plugbitten:unittest',
             NS + 'coverage = bittentrac.plugbitten:coverage',
-            NS + 'lint = bittentrac.plugbitten:nblint'
+            NS + 'pylint = bittentrac.plugbitten:nblint'
         ]
     }
 )

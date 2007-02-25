@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: plugbitten.py 8 2007-02-23 22:20:52Z s0undt3ch $
+# $Id: plugbitten.py 10 2007-02-25 23:02:15Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/plugbitten.py $
-# $LastChangedDate: 2007-02-23 22:20:52 +0000 (Fri, 23 Feb 2007) $
-#             $Rev: 8 $
+# $LastChangedDate: 2007-02-25 23:02:15 +0000 (Sun, 25 Feb 2007) $
+#             $Rev: 10 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -43,7 +43,7 @@ def coverage(ctxt, file_=None):
                             grandchild.gettext()
                         ])
                 results.append(cover)
-            ctxt.report('nosecoverage', results)
+            ctxt.report('coverage', results)
         finally:
             fileobj.close()
     except IOError, e:
@@ -96,7 +96,7 @@ def nblint(ctxt, module=None, args=''):
                         r'\[(?P<type>[A-Z]\d*)(?:, (?P<tag>[\w\.]+))?\] '
                         r'(?P<msg>.*)')
     tot_re = re.compile(r'[\w\s](?P<score>[-\.\d]+)/(?P<maxval>[\d]+)')
-    msg_categories = dict(W='warning', E='error', C='convention', R='refactor', F='failure')
+    msg_categories = dict(W='warning', E='error', C='convention', R='refactor', F='fatal')
 
     problems = xmlio.Fragment()
     try:
@@ -138,10 +138,10 @@ def nblint(ctxt, module=None, args=''):
                         score=totals.group('score'),
                         maxval=totals.group('maxval')
                     ))
-                else:
-                    log.debug('No match found')
+#                else:
+#                    log.debug('No match found')
             #log.debug('PROBS', problems)
-            ctxt.report('lint', problems)
+            ctxt.report('pylint', problems)
         finally:
             fd.close()
     except IOError, e:

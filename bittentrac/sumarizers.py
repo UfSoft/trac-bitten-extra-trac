@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: sumarizers.py 8 2007-02-23 22:20:52Z s0undt3ch $
+# $Id: sumarizers.py 10 2007-02-25 23:02:15Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/sumarizers.py $
-# $LastChangedDate: 2007-02-23 22:20:52 +0000 (Fri, 23 Feb 2007) $
-#             $Rev: 8 $
+# $LastChangedDate: 2007-02-25 23:02:15 +0000 (Sun, 25 Feb 2007) $
+#             $Rev: 10 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -22,11 +22,11 @@ class NoseTestCoverageSummarizer(Component):
     implements(IReportSummarizer)
 
     def get_supported_categories(self):
-        return ['nosecoverage']
+        return ['coverage']
 
     def render_summary(self, req, config, build, step, category):
         self.log.debug('Category: %s', category)
-        assert category == 'nosecoverage'
+        assert category == 'coverage'
 
         db = self.env.get_db_cnx()
         cursor = db.cursor()
@@ -55,7 +55,7 @@ FROM bitten_report AS report
   ON (miss_lines.report=report.id AND
       miss_lines.item=item_name.item AND
       miss_lines.name='miss')
-WHERE category='nosecoverage' AND build=%s AND step=%s
+WHERE category='coverage' AND build=%s AND step=%s
 GROUP BY file, unit ORDER BY unit""", (build.id, step.name))
 
         data = []
@@ -94,11 +94,10 @@ class PyLintSumaryzer(Component):
     implements(IReportSummarizer)
 
     def get_supported_categories(self):
-        return ['lint'] #, 'pylint']
+        return ['pylint']
 
     def render_summary(self, req, config, build, step, category):
-        assert category == 'lint'
-        #assert category in ('lint', 'pylint', 'nblint')
+        assert category == 'pylint'
 
         db = self.env.get_db_cnx()
         cursor = db.cursor()
