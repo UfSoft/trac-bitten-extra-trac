@@ -29,8 +29,8 @@
       <th>Convention</th>
       <th>Refactor</th>
       <th>Warning</th>
-      <th>Failure</th>
       <th>Error</th>
+      <th>Fatal</th>
     </tr>
   </thead>
   <tbody>
@@ -38,8 +38,8 @@
       <td class="convention"><?cs var:totals.convention ?></td>
       <td class="refactor"><?cs var:totals.refactor ?></td>
       <td class="warning"><?cs var:totals.warning ?></td>
-      <td class="failure"><?cs var:totals.failure ?></td>
       <td class="error"><?cs var:totals.error ?></td>
+      <td class="failure"><?cs var:totals.fatal ?></td>
     </tr>
   </tbody>
 </table>

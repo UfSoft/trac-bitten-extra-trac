@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: sumarizers.py 10 2007-02-25 23:02:15Z s0undt3ch $
+# $Id: sumarizers.py 11 2007-02-26 14:31:12Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/sumarizers.py $
-# $LastChangedDate: 2007-02-25 23:02:15 +0000 (Sun, 25 Feb 2007) $
-#             $Rev: 10 $
+# $LastChangedDate: 2007-02-26 14:31:12 +0000 (Mon, 26 Feb 2007) $
+#             $Rev: 11 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -132,7 +132,7 @@ ORDER BY file, line, type""", (category, build.id, step.name))
             'error': 0,
             'warning': 0,
             'refactor': 0,
-            'failure': 0,
+            'fatal': 0,
             'convention': 0,
 
         }
