@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: plugbitten.py 10 2007-02-25 23:02:15Z s0undt3ch $
+# $Id: plugbitten.py 12 2007-05-23 22:07:56Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/plugbitten.py $
-# $LastChangedDate: 2007-02-25 23:02:15 +0000 (Sun, 25 Feb 2007) $
-#             $Rev: 10 $
+# $LastChangedDate: 2007-05-23 23:07:56 +0100 (Wed, 23 May 2007) $
+#             $Rev: 12 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -96,7 +96,14 @@ def nblint(ctxt, module=None, args=''):
                         r'\[(?P<type>[A-Z]\d*)(?:, (?P<tag>[\w\.]+))?\] '
                         r'(?P<msg>.*)')
     tot_re = re.compile(r'[\w\s](?P<score>[-\.\d]+)/(?P<maxval>[\d]+)')
-    msg_categories = dict(W='warning', E='error', C='convention', R='refactor', F='fatal')
+    msg_categories = dict(
+        W='warning',
+        E='error',
+        C='convention',
+        R='refactor',
+        F='fatal',
+        I='ignored'
+    )
 
     problems = xmlio.Fragment()
     try:

@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: sumarizers.py 11 2007-02-26 14:31:12Z s0undt3ch $
+# $Id: sumarizers.py 12 2007-05-23 22:07:56Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/sumarizers.py $
-# $LastChangedDate: 2007-02-26 14:31:12 +0000 (Mon, 26 Feb 2007) $
-#             $Rev: 11 $
+# $LastChangedDate: 2007-05-23 23:07:56 +0100 (Wed, 23 May 2007) $
+#             $Rev: 12 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
 #
 # Please view LICENSE for additional licensing information.
 # =============================================================================
+
+# pylint: disable-msg=E1101
 
 from trac.core import *
 from trac.web.chrome import Chrome
@@ -134,21 +136,25 @@ ORDER BY file, line, type""", (category, build.id, step.name))
             'refactor': 0,
             'fatal': 0,
             'convention': 0,
+            'ignored': 0
 
         }
         for fname, line, ltype, tag, msg, cat in cursor:
-            data.append(
-                {
-                    'href': self.env.href.browser(config.path, fname),
-                    'file': fname,
-                    'line': line,
-                     'type': ltype,
-                     'tag': tag,
-                     'msg': msg,
-                     'cat': cat
-                }
-            )
-            totals[cat] += 1
+            #self.log.debug("%s, %s, %s, %s, %s, %s", fname, line, ltype, tag, msg, cat)
+            #self.log.debug("CAT: %r", cat)
+            if cat in ('error', 'warning', 'refactor', 'fatal', 'convention', 'ignored'):
+                data.append(
+                    {
+                        'href': self.env.href.browser(config.path, fname),
+                        'file': fname,
+                        'line': line,
+                        'type': ltype,
+                        'tag': tag,
+                        'msg': msg,
+                        'cat': cat
+                    }
+                )
+                totals[cat] += 1
         hdf = HDFWrapper(loadpaths=Chrome(self.env).get_all_templates_dirs())
         hdf['data'] = data
         hdf['totals'] = totals

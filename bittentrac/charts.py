@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: charts.py 10 2007-02-25 23:02:15Z s0undt3ch $
+# $Id: charts.py 12 2007-05-23 22:07:56Z s0undt3ch $
 # =============================================================================
 #             $URL: http://bitten.ufsoft.org/svn/BittenExtraTrac/trunk/bittentrac/charts.py $
-# $LastChangedDate: 2007-02-25 23:02:15 +0000 (Sun, 25 Feb 2007) $
-#             $Rev: 10 $
+# $LastChangedDate: 2007-05-23 23:07:56 +0100 (Wed, 23 May 2007) $
+#             $Rev: 12 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -35,6 +35,7 @@ SELECT build.rev, build.platform,
   SUM(CASE WHEN item_cat.value='warning' THEN 1 ELSE 0 END) AS warnings,
   SUM(CASE WHEN item_cat.value='refactor' THEN 1 ELSE 0 END) AS refactors,
   SUM(CASE WHEN item_cat.value='convention' THEN 1 ELSE 0 END) AS convention,
+  SUM(CASE WHEN item_cat.value='ignored' THEN 1 ELSE 0 END) AS ignored,
   MAX(CAST(item_score.value AS float)) AS status
 FROM bitten_build AS build
  LEFT OUTER JOIN bitten_report AS report ON (report.build=build.id)
@@ -48,34 +49,46 @@ ORDER BY build.rev_time, build.platform""", (config.name,))
 
         prev_rev = None
         scores = []
-        for rev, platform, fail, err, warn, ref, conv, score in cursor:
+        for rev, platform, fail, err, warn, ref, conv, ign, score in cursor:
+            self.log.debug(rev, platform, fail, err, warn, ref, conv, ign, score)
             if rev != prev_rev:
                 if score == None:
                     score = 0
 #                else:
 #                    score *= 10.0
-                scores.append([rev, fail, err, warn, ref, conv, score])
+                scores.append([rev, fail, err, warn, ref, conv, ign, score])
             prev_rev = rev
 
         self.log.debug(scores)
 
         req.hdf['chart.title'] = 'PyLint'
+        labels = ['[%s]' % item[0] for item in scores]
+        score = [item[7]*10.0 for item in scores]
+        fatal = [item[1] for item in scores]
+        error = [item[2] for item in scores]
+        warning = [item[3] for item in scores]
+        refactor = [item[4] for item in scores]
+        convention = [item[5] for item in scores]
+        ignored = [item[6] for item in scores]
         req.hdf['chart.data'] = [
-            [''] + ['[%s]' % item[0] for item in scores],
-            ['Score'] + [item[6]*10.0 for item in scores],
-            ['Fatal'] + [item[1] for item in scores],
-            ['Error'] + [item[2] for item in scores],
-            ['Warning'] + [item[3] for item in scores],
-            ['Refactor'] + [item[4] for item in scores],
-            ['Convention'] + [item[5] for item in scores]
+            [''] + labels,
+            ['Score'] + score,
+            ['Fatal'] + fatal,
+            ['Error'] + error,
+            ['Warning'] + warning,
+            ['Refactor'] + refactor,
+            ['Convention'] + convention,
+            ['Ignored'] + ignored,
         ]
+        score = [item[7] for item in scores]
         req.hdf['chart.real_data'] = [
-            [''] + ['[%s]' % item[0] for item in scores],
-            ['Score'] + [item[6] for item in scores],
-            ['Fatal'] + [item[1] for item in scores],
-            ['Error'] + [item[2] for item in scores],
-            ['Warning'] + [item[3] for item in scores],
-            ['Refactor'] + [item[4] for item in scores],
-            ['Convention'] + [item[5] for item in scores]
+            [''] + labels,
+            ['Score'] + score,
+            ['Fatal'] + fatal,
+            ['Error'] + error,
+            ['Warning'] + warning,
+            ['Refactor'] + refactor,
+            ['Convention'] + convention,
+            ['Ignored'] + ignored,
         ]
         return 'bittentrac_pylint_chart.cs'

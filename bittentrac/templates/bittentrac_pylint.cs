@@ -31,6 +31,7 @@
       <th>Warning</th>
       <th>Error</th>
       <th>Fatal</th>
+      <th>Ignored</th>
     </tr>
   </thead>
   <tbody>
@@ -40,6 +41,7 @@
       <td class="warning"><?cs var:totals.warning ?></td>
       <td class="error"><?cs var:totals.error ?></td>
       <td class="failure"><?cs var:totals.fatal ?></td>
+      <td class="failure"><?cs var:totals.ignored ?></td>
     </tr>
   </tbody>
 </table>

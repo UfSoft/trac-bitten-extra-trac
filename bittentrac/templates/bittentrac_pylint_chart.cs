@@ -6,6 +6,7 @@
   <value>column</value>
   <value>column</value>
   <value>column</value>
+  <value>column</value>
  </chart_type>
 
  <axis_category size="10" orientation="diagonal_up"
@@ -43,8 +44,9 @@
    <color>ff0000</color> <!-- Fatal -->
    <color>ff9292</color> <!-- Error -->
    <color>ffe157</color> <!-- Warning -->
-   <color>9999ff</color> <!-- Refactor -->
+   <color>6d8af8</color> <!-- Refactor -->
    <color>d1ea95</color> <!-- Convention -->
+   <color>a0b4ff</color> <!-- Ignored -->
  </series_color>
 
  <legend_label layout="vertical" alpha="60"/>
